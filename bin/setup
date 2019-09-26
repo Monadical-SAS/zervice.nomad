@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )"
+cd "$ROOT_DIR"
+
+# Setup configuration files
+source /etc/environments
+envsubst < config.env.template > config.env
+source config.env
+envsubst < etc/nomad/server.hcl.template > etc/nomad/server.hcl
+envsubst < etc/rsyslog/nomad-server.conf.template > etc/rsyslog/nomad-server.conf
+envsubst < etc/systemd/nomad-server.service.template > etc/systemd/nomad-server.service
+
+# Setup state directories
+mkdir -p data/nomad
+mkdir -p data/logs
+mkdir -p data/tmp
+
+# Install Nomad binary
+wget --continue "$NOMAD_DOWNLOAD_URL" -O "data/tmp/$NOMAD_RELEASE.zip"
+unzip "data/tmp/$NOMAD_RELEASE.zip" -d bin/
+rm "data/tmp/$NOMAD_RELEASE.zip"
+ln -f -s "$ROOT_DIR/bin/nomad" "/usr/local/bin/nomad"
+/usr/local/bin/nomad -autocomplete-install
+
+# Symlink config files into place
+mkdir -p /etc/nomad.d
+ln -f -s "$ROOT_DIR/etc/nomad/server.hcl" "/etc/nomad.d/server.hcl"
+ln -f -s "$ROOT_DIR/etc/rsyslog/nomad-server.conf" "/etc/rsyslog.d/nomad-server.conf"
+ln -f -s "$ROOT_DIR/etc/systemd/nomad-server.service" "/etc/systemd/system/nomad-server.service"
+ln -f -s "$ROOT_DIR/data/logs/nomad-server.log" "/var/log/nomad-server.log"
+
+systemctl restart rsyslog
+systemctl daemon-reload
+systemctl enable nomad
+systemctl start nomad
+
+nomad version
+nomad status

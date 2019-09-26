@@ -1,0 +1,8 @@
+data/logs/
+data/tmp/
+data/nomad/
+
+config.env
+etc/nomad/server.hcl
+etc/systemd/nomad-server.service
+etc/rsyslog/nomad-server.conf

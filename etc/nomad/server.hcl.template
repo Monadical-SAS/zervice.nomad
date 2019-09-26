@@ -1,0 +1,20 @@
+log_level = "DEBUG"
+data_dir = "$ROOT_DIR/data/nomad"
+
+region = "$NOMAD_REGION"
+datacenter = "$NOMAD_DATACENTER"
+
+ports {
+  http = "$NOMAD_HTTP_PORT"
+  rpc  = "$NOMAD_RPC_PORT"
+  serf = "$NOMAD_SERF_PORT"
+}
+
+server {
+    enabled = true
+    bootstrap_expect = 1
+}
+
+client {
+  enabled = false
+}

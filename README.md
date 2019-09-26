@@ -1,6 +1,6 @@
-# ubuntu.nomad-client
+# zervice.nomad
 
-Hashicorp nomad setup for Ubuntu.
+[Hashicorp Nomad](https://www.nomadproject.io) server setup for Ubuntu.
 
 - https://github.com/Monadical-SAS/ubuntu.nomad-client
 - https://github.com/hashicorp/nomad
@@ -9,15 +9,15 @@ Hashicorp nomad setup for Ubuntu.
 
 ```fish
 cd /opt
-git clone https://github.com/Monadical-SAS/ubuntu.nomad-client
-cd ubuntu.nomad-client
+git clone https://github.com/Monadical-SAS/zervice.nomad
+cd zervice.nomad
 
 # Run the setup script & tweak any necessary configuration
 ./bin/setup
-nano etc/nomad/client.hcl
+nano etc/nomad/server.hcl
 
 # Then restart it and check its status
-systemctl restart nomad
-systemctl status nomad
+systemctl restart nomad-server
+systemctl status nomad-server
 nomad status
 ```

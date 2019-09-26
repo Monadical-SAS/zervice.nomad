@@ -32,8 +32,8 @@ ln -f -s "$ROOT_DIR/data/logs/nomad-server.log" "/var/log/nomad-server.log"
 
 systemctl restart rsyslog
 systemctl daemon-reload
-systemctl enable nomad
-systemctl start nomad
+systemctl enable nomad-server
+systemctl start nomad-server
 
 nomad version
 nomad status
